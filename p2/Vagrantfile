@@ -1,0 +1,25 @@
+Vagrant.configure(2) do |config|
+  config.vm.box = REDACTED
+  config.vm.box_url = REDACTED
+  config.vm.define "wilS" do |control|
+    control.vm.hostname = "wilS"
+    control.vm.network REDACTED, ip: "192.168.56.110"
+    control.vm.provider REDACTED do |v|
+      v.customize ["modifyvm", :id, "--name", "wilS"]
+    end
+    config.vm.provision :shell, :inline => SHELL
+    SHELL
+    control.vm.provision "shell", path: REDACTED
+  end
+  config.vm.define "wilSW" do |control|
+    control.vm.hostname = "wilSW"
+    control.vm.network REDACTED, ip: "192.168.56.111"
+    control.vm.provider REDACTED do |v|
+      v.customize ["modifyvm", :id, "--name", "wilSW"]
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+    [..]
+    SHELL
+    control.vm.provision "shell", path: REDACTED
+  end
+end 
