@@ -1,35 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+# Vagrant.configure("2") do |config|
+#   # Every Vagrant development environment requires a box. You can search for
+#   # boxes at https://vagrantcloud.com/search.
+
+#   config.vm.box = "centos/8"
+#   config.vm.box_version = "2011.0"
+#   config.vm.box_url = "https://app.vagrantup.com/centos/boxes/8"
+  
+#   config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
+#   config.vm.provision "shell", inline: <<-SHELL
+#     cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
+#   SHELL
+
+
+
 Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
     vb.cpus = "1"
   end
-  config.vm.box = "centos/7"
-  config.vm.box_version = "2004.01"
+  config.vm.box = "centos/8"
+  # config.vm.box_version = "2004.01"
   # config.vm.box_url = "https://app.vagrantup.com/ubuntu/boxes/trusty64"
   config.vm.network "public_network", auto_config: false, bridge: "docker0"
+
   # Kubernetes API Access
   config.vm.network "forwarded_port", guest: 6443, host: 6443
   config.ssh.insert_key = false
-
   for p in 30000..30100
     config.vm.network "forwarded_port", guest: p, host: p, protocol: "tcp"
   end
 
-  config.vm.define "jurichar" do |control|
+  config.vm.define "juricharS" do |control|
     control.vm.hostname = "juricharS"
-    # config.vm.provision "shell", run: "always", inline: "ifconfig eth1 192.168.56.110 netmask 255.255.255.0 up"
-    # config.vm.provision "shell", run: "always", inline: "sudo apt-get install -y systemd"
-
-    config.vm.provision "shell", run: "always", inline: <<-SHELL
+    control.vm.network "private_network", ip: "192.168.56.110", virtualbox__intnet: true
+    control.vm.network "private_network", ip: "192.168.42.110", virtualbox__intnet: "vboxnet0"
+    control.vm.provision "shell", run: "always", inline: <<-SHELL
+    
     echo "******** Installing dependencies ********"
+    cd /etc/yum.repos.d/
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
     echo "******** Begin installing k3s ********"
-    curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.19.2+k3s1 K3S_KUBECONFIG_MODE="644" sh -
+    curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.21.4+k3s1 K3S_NODE_IP="192.168.56.110" K3S_KUBECONFIG_MODE="644" K3S_NODE_INTERNAL_IP="192.168.42.110" sh -
     echo "******** End installing k3s ********"
-
+    
     echo "******** Begin installing helm ********"
-    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-    echo "******** End installing helm ********"
-  SHELL
+    # curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+    echo "******** End installing helm ********"    
+    SHELL
   end
 end
