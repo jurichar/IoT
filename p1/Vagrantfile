@@ -32,8 +32,7 @@
         vb.cpus = "1"
       end      
       control.vm.hostname = "mpochardS"
-      control.vm.network "private_network", ip: "192.168.56.110", auto_config: false
-      control.vm.provision "shell", inline: "sudo ip route replace default via 192.168.56.110 dev eth1"
+      control.vm.network "private_network", ip: "192.168.56.110", virtualbox__intnet: true
     end
 
     config.vm.define "mpochardSW" do |control|
@@ -48,7 +47,6 @@
       end
 
       control.vm.hostname = "mpochardSW"
-      control.vm.network "private_network", ip: "192.168.56.111", hostname: true, auto_config: false
-      control.vm.provision "shell", inline: "sudo ip route replace default via 192.168.56.111 dev eth1"
+      control.vm.network "private_network", ip: "192.168.56.111", virtualbox__intnet: true
     end
   end
