@@ -39,6 +39,7 @@
 
       control.vm.provider "virtualbox" do |vb|
         vb.name = "mpochardSW"
+        
         vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50", "--name", "mpochardSW"]
         vb.linked_clone = true
         vb.check_guest_additions = false
