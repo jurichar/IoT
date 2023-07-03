@@ -9,3 +9,4 @@ a l'adresse 192.186.20.110.
 Nous avons des sous dossier de chaque services dans le dossier files que nous allons copier dans la VM server.
 
 App1 :
+
