@@ -1,63 +1,64 @@
+  # frozen_string_literal: true
+
   # -*- mode: ruby -*-
   # vi: set ft=ruby :
 
-  # All Vagrant configuration is done below. The "2" in Vagrant.configure
-  # configures the configuration version (we support older styles for
-  # backwards compatibility). Please don't change it unless you know what
-  # you're doing.
-  Vagrant.configure("2") do |config|
-    # The most common configuration options are documented and commented below.
-    # For a complete reference, please see the online documentation at
-    # https://docs.vagrantup.com.
+  Vagrant.configure('2') do |config|
+    config.vm.box = 'centos/8'
+    config.vm.box_version = '2011.0'
+    config.vm.box_url = 'https://app.vagrantup.com/centos/boxes/8'
 
-    # Every Vagrant development environment requires a box. You can search for
-    # boxes at https://vagrantcloud.com/search.
-  
-    config.vm.box = "centos/8"
-    config.vm.box_version = "2011.0"
-    config.vm.box_url = "https://app.vagrantup.com/centos/boxes/8"
-
-    config.vm.provision "shell", path: "./setup.sh"
-    
-    config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
-    config.vm.provision "shell", inline: <<-SHELL
+    config.vm.provision 'shell', path: './setup.sh'
+    config.vm.provision 'file', source: '~/.ssh/id_rsa.pub', destination: '~/.ssh/me.pub'
+    config.vm.provision 'shell', inline: <<-SHELL
       cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
     SHELL
 
-    config.vm.define "mpochardS" do |control|
-      control.vm.provider "virtualbox" do |vb|
-        vb.name = "mpochardS"
-        vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50", "--name", "mpochardS"]
+    config.vm.define 'mpochardS' do |control|
+      control.vm.provider 'virtualbox' do |vb|
+        vb.name = 'mpochardS'
+        vb.customize ['modifyvm', :id, '--cpuexecutioncap', '50', '--name', 'mpochardS']
         vb.linked_clone = true
         vb.check_guest_additions = false
-        vb.memory = "1024"
-        vb.cpus = "1"
-      end      
+        vb.memory = '1024'
+        vb.cpus = '1'
+      end
 
-      control.vm.hostname = "mpochardS"
-      control.vm.network "private_network", ip: "192.168.42.110", virtualbox__intnet: true
+      control.vm.hostname = 'mpochardS'
+      control.vm.network 'private_network', ip: '192.168.42.110', virtualbox__intnet: true
 
-      control.vm.network "forwarded_port", guest: 22, host: 2222, id: "ssh", disabled: true
-      control.vm.network "forwarded_port", guest: 22, host: 2000 # control Node SSH
-      control.vm.network "forwarded_port", guest: 6443, host: 6443 # API Access
-      control.vm.provision "shell", inline: <<-SHELL
-      curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.19.2+k3s1 K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--node-ip=192.168.42.110" sh -
-    SHELL
+      control.vm.network 'forwarded_port', guest: 22, host: 2222, id: 'ssh', disabled: true
+      control.vm.network 'forwarded_port', guest: 22, host: 2000 # control Node SSH
+      control.vm.network 'forwarded_port', guest: 6443, host: 6443 # API Access
+      control.vm.provision 'shell', inline: <<-SHELL
+      curl -sfL https://get.k3s.io |
+        INSTALL_K3S_VERSION=v1.19.2+k3s1
+        K3S_KUBECONFIG_MODE='644'
+        INSTALL_K3S_EXEC='--flannel-iface 'eth1''
+        INSTALL_K3S_EXEC='--node-ip=192.168.42.110' sh -
+      SHELL
     end
 
-    # config.vm.define "mpochardSW" do |control|
+    config.vm.define 'mpochardSW' do |agent|
+      agent.vm.provider 'virtualbox' do |vb|
+        vb.name = 'mpochardSW'
+        vb.customize ['modifyvm', :id, '--cpuexecutioncap', '50', '--name', 'mpochardSW']
+        vb.linked_clone = true
+        vb.check_guest_additions = false
+        vb.memory = '2048'
+        vb.cpus = '2'
+      end
 
-    #   control.vm.provider "virtualbox" do |vb|
-    #     vb.name = "mpochardSW"
-        
-    #     vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50", "--name", "mpochardSW"]
-    #     vb.linked_clone = true
-    #     vb.check_guest_additions = false
-    #     vb.memory = "1024"
-    #     vb.cpus = "1"
-    #   end
+      agent.vm.hostname = 'mpochardSW'
+      agent.vm.network 'private_network', ip: '192.168.42.111', virtualbox__intnet: true
 
-    #   control.vm.hostname = "mpochardSW"
-    #   control.vm.network "private_network", ip: "192.168.42.111", virtualbox__intnet: true
-    # end
+      agent.vm.provision 'shell', inline: <<-SHELL
+        curl -sfL https://get.k3s.io |
+          K3S_KUBECONFIG_MODE='644' \
+          INSTALL_K3S_EXEC='--flannel-iface 'eth1'' \
+          INSTALL_K3S_EXEC='--node-ip=192.168.42.111' \
+          INSTALL_K3S_EXEC='--server https://192.168.42.110:6443' \
+          sh -
+      SHELL
+    end
   end
