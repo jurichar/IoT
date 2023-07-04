@@ -8,5 +8,10 @@ a l'adresse 192.186.20.110.
 
 Nous avons des sous dossier de chaque services dans le dossier files que nous allons copier dans la VM server.
 
-App1 :
+Usefull commands :
 
+vagrant up -> pour demarrer la VM
+vagrant global-status -> lister toutes les VMs
+vagrant halt -> pour arreter la VM
+kubectl describe <pod>
+kubectl get all
