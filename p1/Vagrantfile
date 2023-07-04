@@ -12,24 +12,18 @@ Vagrant.configure('2') do |config|
     sudo echo 'alias python=/usr/bin/python3' >> /home/vagrant/.bashrc
     sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config
     sudo systemctl restart sshd
-    mkdir -p /vagrant
   SHELL
 
   config.vm.box = 'centos/8'
   config.vm.box_version = '2011.0'
   config.vm.box_url = 'https://app.vagrantup.com/centos/boxes/8'
-  config.vbguest.auto_update = false
-  config.vbguest.no_remote = true
-  config.vbguest.installer_options = { allow_kernel_upgrade: true }
 
   config.vm.define 'mpochardS' do |control|
     control.vm.hostname = 'mpochardS'
     control.vm.network 'private_network', ip: '192.168.42.110'
-    control.vbguest.installer_options = { allow_kernel_upgrade: true }
-    control.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
     control.vm.provider 'virtualbox' do |v|
       v.name = 'mpochardS'
-      v.check_guest_additions = true
+      v.check_guest_additions = false
       v.memory = '1024'
       v.cpus = '1'
       v.customize ['modifyvm', :id, '--cpuexecutioncap', '50', '--name', 'mpochardS']
@@ -50,11 +44,9 @@ Vagrant.configure('2') do |config|
   config.vm.define 'mpochardSW' do |control|
     control.vm.hostname = 'mpochardSW'
     control.vm.network 'private_network', ip: '192.168.42.111'
-    control.vbguest.installer_options = { allow_kernel_upgrade: true }
-    control.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
     control.vm.provider 'virtualbox' do |v|
       v.name = 'mpochardSW'
-      v.check_guest_additions = true
+      v.check_guest_additions = false
       v.memory = '1024'
       v.cpus = '1'
       v.customize ['modifyvm', :id, '--cpuexecutioncap', '50', '--name', 'mpochardSW']
@@ -63,7 +55,6 @@ Vagrant.configure('2') do |config|
     end
     control.vm.provision :shell, inline: common
     control.vm.provision :shell, inline: <<-SHELL
-    echo 'Token du serveur depuis worker: $K3S_TOKEN'
       export K3S_TOKEN=$(cat /vagrant/k3s_token)
       curl -sfL https://get.k3s.io |
         INSTALL_K3S_EXEC='--flannel-iface 'eth1''\
@@ -72,7 +63,7 @@ Vagrant.configure('2') do |config|
         K3S_TOKEN=$K3S_TOKEN \
         K3S_KUBECONFIG_MODE='644' \
         sh -
-        echo 'LE TOKEN DU SERVEUR EST: $K3S_TOKEN'
+      echo 'LE TOKEN DU SERVEUR EST: $K3S_TOKEN'
     SHELL
   end
 end
