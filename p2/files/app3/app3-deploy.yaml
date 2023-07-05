@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-trois
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-trois
+  template:
+    metadata:
+      labels:
+        app: hello-trois
+    spec:
+      containers:
+      - name: hello-kubernetes
+        image: paulbouwer/hello-kubernetes:1.7
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MESSAGE
+          value: Hello je suis le TROIS !!!
