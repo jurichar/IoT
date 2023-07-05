@@ -1,5 +1,9 @@
 # Inception of Things
 
+## Description
+
+This project is a total setup of infrastructure with kube, vagrant and other infrastructure tools.
+
 ## k3s
 
 ```bash
