@@ -1,17 +1,18 @@
 En premier nous faisons un vagrantfile comme dans la partie une mais avec uniquement la partie server.
 
-ensuite nous allons deployer nos 3 applications.
+On va ensuite copier les fichiers vers la VM.
 
-Chaque une sera accessible en fonction du HOST utiliser.
+On va attribuer les spec a la VM.
 
-a l'adresse 192.186.20.110.
+Puis lancer le script.
 
-Nous avons des sous dossier de chaque services dans le dossier files que nous allons copier dans la VM server.
+Dans ce script on va installer k3s puis appliquer les differents services app1, app2 et app3 ainsi que qu'un ingress controller.
 
-Usefull commands :
+Pour tester on peut utiliser kubectl get all et on voit les differents services qui tournent.
 
-vagrant up -> pour demarrer la VM
-vagrant global-status -> lister toutes les VMs
-vagrant halt -> pour arreter la VM
-kubectl describe <pod>
-kubectl get all
+On peut aussi tester un service plus specifiquement avec :
+`curl -H "Host:app1.com" 192.168.56.110`
+
+Ici on utilise l'host app1.com mais cela fonctionne avec app2.com.
+
+Si l'on utilise pas d'host, on est alors rediriger vers app3, comme le demande le sujet.
