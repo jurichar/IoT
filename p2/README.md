@@ -36,3 +36,10 @@ ajouter la ligne a la fin du fichier :
 `[ip] [host name]`
 
 `192.168.56.110 app1.com` : /!\ de base c'est `app1.example.com` donc il faut le modifier !
+`192.168.56.110 app2.com`
+
+Pour acceder aux page :
+
+`app1.com` : app1.com
+`app2.com` : app2.com
+`192.168.56.110` : app3.com
