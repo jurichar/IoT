@@ -13,4 +13,4 @@ sudo kubectl apply -f App/app-deploy.yaml -n dev
 sudo kubectl apply -f App/app-service.yaml -n dev
 
 sudo kubectl get svc -n dev
-sudo kubeclt get deployments -n dev
+sudo kubectl get deployments -n dev
