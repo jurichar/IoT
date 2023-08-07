@@ -1,2 +1,2 @@
-#   ignore all the .vragrant
- .vragrant
+.vagrant
+**.vagrant
