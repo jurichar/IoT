@@ -42,7 +42,7 @@ sudo kubectl get services -n argocd
 sudo kubectl get services -n dev
 sudo kubectl get deployments -n dev
 
-sudo kubectl apply -f mpochard-config/application.yaml 
+sudo kubectl apply -f application.yaml 
 
 # sleep 30
 
