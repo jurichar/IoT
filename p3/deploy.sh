@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 sudo k3d cluster create part3
 
