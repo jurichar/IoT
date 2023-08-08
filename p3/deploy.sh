@@ -31,9 +31,13 @@ password=$(sudo kubectl -n argocd get secret argocd-initial-admin-secret -o json
 echo "admin" > id_agrocd.txt
 echo $password >> id_agrocd.txt
 
-sudo kubectl get svc -n dev
+sudo kubectl get pod -n argocd -w
+sudo kubectl get pod -n dev -w
+
+sudo kubectl get services -n argocd
+sudo kubectl get services -n dev
 sudo kubectl get deployments -n dev
 
-wait 100
+# sleep 30
 
 sudo kubectl port-forward -n argocd service/argocd-server 8080:443
