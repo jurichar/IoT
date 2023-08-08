@@ -29,14 +29,30 @@ function install_kubectl() {
 }
 
 function install_dependencies() {
-	install_docker
-	install_kubectl
+	if command -v docker &> /dev/null;
+	then
+		echo "docker already installed"
+	else
+		install_docker
+	fi
+
+	if command -v kubectl &> /dev/null;
+	then
+		echo "kubectl alreay installed"
+	else
+		install_kubectl
+	fi
 }
 
 install_dependencies
 
 #install K3D
-curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.0.0 bash
+if command -v k3d &> /dev/null;
+then
+	echo "k3d already installed"
+else
+	curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.0.0 bash
+fi
 
 #launch deploy script
-bash deploy.sh
+./deploy.sh
