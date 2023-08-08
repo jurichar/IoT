@@ -43,7 +43,7 @@ sudo kubectl get services -n argocd
 sudo kubectl get services -n dev
 sudo kubectl get deployments -n dev
 
-sudo kubectl apply -f application.yaml 
+sudo kubectl apply -f App/application.yaml 
 
 # sleep 30
 
