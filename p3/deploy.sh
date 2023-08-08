@@ -28,3 +28,7 @@ deploy_argocd
 
 sudo kubectl get svc -n dev
 sudo kubectl get deployments -n dev
+
+wait 100
+
+sudo kubectl port-forward -n argocd service/argocd-server 8080:443
