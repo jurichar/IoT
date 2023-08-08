@@ -17,8 +17,10 @@ password=$(sudo kubectl -n argocd get secret argocd-initial-admin-secret -o json
 echo "admin" > id_agrocd.txt
 echo $password >> id_agrocd.txt
 
-sudo kubectl get pod -n argocd -w
-sudo kubectl get pod -n dev -w
+while [[ $(sudo kubectl get pods -n argocd -o 'jsonpath={..status.containerStatuses[*].ready}') != "true true true true true true false" || $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}') != "true" ]]; do
+    echo "Waiting for pods..."
+    sleep 5
+done
 
 sudo kubectl get services -n argocd
 sudo kubectl get services -n dev
