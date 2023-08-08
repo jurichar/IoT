@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/m3L4n/mpochard-config.git
     targetRevision: HEAD
-    path: main
+    path: master
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
