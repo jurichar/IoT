@@ -27,6 +27,8 @@ Si l'on utilise pas d'host, on est alors rediriger vers app3, comme le demande l
 
 `kubectl get pods -o wide` : pour verifier la presence des pods. 
 
+`exit` on sort du container.
+
 `vim /etc/hosts` 
 ou 
 `sudo vim /etc/hosts` 
