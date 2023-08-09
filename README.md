@@ -25,7 +25,7 @@ Cette partie concerne la configuration initiale de deux machines virtuelles avec
 
 **Suggestion de capture d'écran** : Une capture de vos machines virtuelles en cours d'exécution, ainsi que le résultat de la commande `k get nodes -o wide`.
 
-[Plus de détails dans le README de la Partie 1](./part1/readme.md)
+[Plus de détails dans le README de la Partie 1](./p1/README.md)
 
 ---
 
@@ -41,7 +41,7 @@ Cette section traite du déploiement des services sur une machine virtuelle.
 
 **Suggestion de capture d'écran** : Une capture montrant le résultat de la commande `kubectl get all`, ainsi qu'une capture de la réponse de la commande `curl -H "Host:app1.com" 192.168.56.110`.
 
-[Plus de détails dans le README de la Partie 2](./part2/readme.md)
+[Plus de détails dans le README de la Partie 2](./p2/README.md)
 
 ---
 
@@ -57,7 +57,7 @@ Intégration d'ArgoCD et K3D pour la gestion des déploiements.
 
 **Suggestion de capture d'écran** : Une capture de l'interface ArgoCD montrant vos applications déployées, ainsi qu'une capture de l'application `wil-application` en cours d'exécution.
 
-[Plus de détails dans le README de la Partie 3](./part3/readme.md)
+[Plus de détails dans le README de la Partie 3](./p3/README.md)
 
 ---
 ## Contribution
