@@ -23,7 +23,7 @@ Cette partie concerne la configuration initiale de deux machines virtuelles avec
   - Connexion SSH sans mot de passe.
   - Installation de K3s en mode contrôleur et agent.
 
-**Suggestion de capture d'écran** : Une capture de vos machines virtuelles en cours d'exécution, ainsi que le résultat de la commande `k get nodes -o wide`.
+[screen_p1](./screen_p1.png)
 
 [Plus de détails dans le README de la Partie 1](./p1/README.md)
 
@@ -38,6 +38,8 @@ Cette section traite du déploiement des services sur une machine virtuelle.
   - Copie des fichiers vers la VM.
   - Attribution des spécifications à la VM.
   - Lancement du script pour installer k3s et appliquer les services.
+
+[screen_p2](./screen_p2.png)
 
 **Suggestion de capture d'écran** : Une capture montrant le résultat de la commande `kubectl get all`, ainsi qu'une capture de la réponse de la commande `curl -H "Host:app1.com" 192.168.56.110`.
 
