@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: argocdrocks-project
+  name: part3
   labels:
     app: part3
 spec:
