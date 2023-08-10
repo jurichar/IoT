@@ -1,9 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: part3
+  name: wil-playground-project
   labels:
-    app: part3
+    app: wil-playground
 spec:
   description: Our ArgoCD Project to deploy our app locally
   sourceRepos:
