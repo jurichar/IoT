@@ -19,6 +19,6 @@ sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.dat
 sudo kubectl apply -f project.yaml -n argocd
 
 sudo kubectl apply -f application.yaml -n argocd
-
+sudo kubectl get pods -n dev -w
 sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
 sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
