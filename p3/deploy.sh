@@ -54,8 +54,8 @@ sudo kubectl get services -n argocd
 sudo kubectl get services -n dev
 sudo kubectl get deployments -n dev
 
-sudo kubectl apply -f project.yaml -n argocd
-sudo kubectl apply -f App/application.yaml 
+sudo kubectl apply -f project.yaml
+sudo kubectl apply -f application.yaml 
 
 sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
 sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
