@@ -25,13 +25,13 @@ else
     echo -e "${RED}Error applying ArgoCD.${NC}"
 fi
 
-if sudo kubectl apply -f App/dev/app-deploy.yaml -n dev 2>/dev/null; then
+if sudo kubectl apply -f App/dev/deployment.yaml -n dev 2>/dev/null; then
     echo -e "${GREEN}App deployment applied successfully.${NC}"
 else
     echo -e "${RED}Error applying app deployment.${NC}"
 fi
 
-if sudo kubectl apply -f App/dev/app-service.yaml -n dev 2>/dev/null; then
+if sudo kubectl apply -f App/dev/service.yaml -n dev 2>/dev/null; then
     echo -e "${GREEN}App service applied successfully.${NC}"
 else
     echo -e "${RED}Error applying app service.${NC}"
@@ -54,7 +54,7 @@ sudo kubectl get services -n argocd
 sudo kubectl get services -n dev
 sudo kubectl get deployments -n dev
 
-sudo kubectl apply -f App/project.yaml -n argocd
+sudo kubectl apply -f project.yaml -n argocd
 sudo kubectl apply -f App/application.yaml 
 
 sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
