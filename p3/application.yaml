@@ -1,22 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  labels:
+    app: part3
   name: part3
 spec:
-  project: default
-
+  project: argocdrocks-project
   source:
     repoURL: https://github.com/m3L4n/mpochard-config.git
     targetRevision: HEAD
     path: dev
-  destination: 
+  destination:
     server: https://kubernetes.default.svc
     namespace: dev
-
   syncPolicy:
-    syncOptions:
-    - CreateNamespace=true
-
     automated:
-      selfHeal: true
       prune: false
+      selfHeal: true

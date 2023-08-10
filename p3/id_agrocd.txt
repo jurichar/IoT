@@ -1,2 +1,0 @@
-user: admin
-password : Bh03r4ZTUj84zTux
