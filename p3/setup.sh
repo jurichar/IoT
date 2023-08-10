@@ -54,5 +54,12 @@ else
 	curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.0.0 bash
 fi
 
+if [ $1 = "clean" ];
+then
+	echo "cleaning old clusters...."
+	sudo pkill -f "kubectl port-forward"
+	sudo k3d cluster delete part3
+fi
+
 #launch deploy script
-./deploy.sh
+#./deploy.sh
