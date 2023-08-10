@@ -32,6 +32,11 @@ sudo kubectl apply -f project.yaml -n argocd
 deploy_dev
 deploy_argocd
 
+while [[ $(sudo kubectl get pods -n argocd -o 'jsonpath={..status.containerStatuses[*].ready}') != "true true true true true true false" || $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}') != "true" ]]; do
+    echo "Waiting for pods..."
+    sleep 5
+done
+
 password=$(sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 echo "admin" > id_agrocd.txt
