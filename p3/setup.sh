@@ -62,4 +62,4 @@ then
 fi
 
 #launch deploy script
-#./deploy.sh
+./deploy.sh
