@@ -1,2 +1,4 @@
 .vagrant
 **.vagrant
+*/*.vagrant
+****/.vagrant
