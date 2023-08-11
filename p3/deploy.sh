@@ -53,15 +53,15 @@ else
 fi
 
 while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do    
-    echo -e "\e[10A"
-    for i in {1..10}; do
+    echo -e "\e[3A"
+    for i in {1..3}; do
         echo -n "                                                                                                 "
     done
-    echo -e "\e[5A"
-
+    echo -e "\e[2A"
     echo -e "${YELLOW}Waiting for pods dev...${NC}"
     sudo kubectl get pods -n dev
     sleep 2
 done
+
 
 
