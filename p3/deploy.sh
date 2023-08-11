@@ -32,8 +32,8 @@ fi
 #     echo -e "${RED}Error applying app service.${NC}"
 # fi
 
-while [[ $(sudo kubectl get pods -n argocd -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true true true true true true false" ]]; do    
-    echo -e "${YELLOW}Waiting for pods...${NC}"
+while [[ $(sudo kubectl get pods -n argocd -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true true true true true true true" ]]; do    
+    echo -e "${YELLOW}Waiting for pods agrocd...${NC}"
     sleep 20
 done
 
@@ -48,6 +48,11 @@ echo "password : $password" >> id_agrocd.txt
 
 sudo kubectl apply -f project.yaml -n argocd
 sudo kubectl apply -f application.yaml -n argocd
+
+while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do    
+    echo -e "${YELLOW}Waiting for pods agrocd...${NC}"
+    sleep 20
+done
 
 sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
 sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
