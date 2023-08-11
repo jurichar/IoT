@@ -1,18 +1,23 @@
 #!/bin/bash
 
-sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
-sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
+# Fonction pour le port-forward du service argocd-server
+port_forward_argocd() {
+    while true; do
+        sudo kubectl port-forward -n argocd service/argocd-server 8080:443
+        echo "ArgoCD port-forward stopped. Restarting in 5 seconds..."
+        sleep 5
+    done
+}
 
-while 1; do
-    echo -e "${YELLOW}Waiting for port-forward...${NC}"
-    sleep 20
-    if [[ $(sudo kubectl get pod -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; then
-        while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do    
-            echo -e "${YELLOW}Waiting for pods dev...${NC}"
-            sudo kubectl get pods -n dev
-            sleep 20
-        done
-        sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
-        echo -e "${GREEN}Port-forward dev applied successfully.${NC}"
-    fi
-done
+# Fonction pour le port-forward du service wil-service
+port_forward_dev() {
+    while true; do
+        sudo kubectl port-forward -n dev service/wil-service 8888:8888
+        echo "Dev port-forward stopped. Restarting in 5 seconds..."
+        sleep 5
+    done
+}
+
+# Exécutez les fonctions en arrière-plan
+port_forward_argocd &
+port_forward_dev &
