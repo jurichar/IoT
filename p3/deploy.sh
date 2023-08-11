@@ -44,7 +44,7 @@ else
 fi
 
 while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do    
-    echo -e "${YELLOW}Waiting for pods agrocd...${NC}"
+    echo -e "${YELLOW}Waiting for pods dev...${NC}"
     sleep 20
 done
 
