@@ -9,11 +9,11 @@ spec:
   description: Our ArgoCD Project to deploy our app locally
   # Allow manifests to deploy only from our git repositories
   sourceRepos:
-  - "https://github.com/m3L4n/*"
+   - "https://github.com/m3L4n/*"
   # Only permit to deploy applications in the same cluster
   destinations:
-  - namespace: dev
-    server: https://kubernetes.default.svc
+   - server: https://kubernetes.default.svc
+     namespace: dev
   # Enables namespace orphaned resource monitoring.
   orphanedResources:
     warn: false
