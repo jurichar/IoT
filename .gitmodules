@@ -1,0 +1,3 @@
+[submodule "p3/App"]
+	path = p3/App
+	url = https://github.com/m3L4n/mpochard-config.git
