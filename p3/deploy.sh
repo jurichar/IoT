@@ -38,7 +38,7 @@ else
 fi
 
 if sudo kubectl apply -f project.yaml -n argocd 2>/dev/null; then
-    echo -e "${GREEN}App service applied successfully.${NC}"
+    echo -e "${GREEN}Project service applied successfully.${NC}"
 else
     echo -e "${RED}Error applying app service.${NC}"
 fi
