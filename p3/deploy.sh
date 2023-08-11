@@ -8,12 +8,12 @@ NC='\033[0m' # Pas de couleur
 
 sudo k3d cluster create part3 --api-port 6443 --agents 2
 
-sudo kubectl config use-context k3d-part3
+# sudo kubectl config use-context k3d-part3
+sudo kubectl config set-cluster part3 --server=https://localhost:6443 --insecure-skip-tls-verify=true
 
 sudo kubectl create namespace dev
 sudo kubectl create namespace argocd
 
-sudo kubectl config set-cluster k3d-part3 --server=https://localhost:6443 --insecure-skip-tls-verify=true
 
 if sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml 2>/dev/null; then
     echo -e "${GREEN}ArgoCD applied successfully.${NC}"
@@ -43,12 +43,12 @@ password=$(sudo kubectl -n argocd get secret argocd-initial-admin-secret -o json
 echo "user: admin" > id_agrocd.txt
 echo "password : $password" >> id_agrocd.txt
 
-sudo kubectl get services -n argocd
-sudo kubectl get services -n dev
-sudo kubectl get deployments -n dev
+# sudo kubectl get services -n argocd
+# sudo kubectl get services -n dev
+# sudo kubectl get deployments -n dev
 
-sudo kubectl apply -f project.yaml -n dev
-sudo kubectl apply -f application.yaml -n dev
+sudo kubectl apply -f project.yaml -n argocd
+sudo kubectl apply -f application.yaml -n argocd
 
 sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
 sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
