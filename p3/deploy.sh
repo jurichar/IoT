@@ -21,10 +21,19 @@ else
 fi
 
 while [[ $(sudo kubectl get pods -n argocd -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true true true true true true true" ]]; do    
-    echo -e "${YELLOW}Waiting for pods agrocd...${NC}"
+    echo -e "\e[10A"
+    for i in {1..10}; do
+        echo -n "                                                                                                 "
+    done
+    echo -e "\e[10A"
+
+    echo -e "${YELLOW}Waiting for pods argocd...${NC}"
     sudo kubectl get pods -n argocd
-    sleep 20
+    sleep 2
 done
+
+
+echo -e "${GREEN}All ArgoCD pods are ready!${NC}"
 
 password=$(sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
@@ -44,24 +53,15 @@ else
 fi
 
 while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do    
+    echo -e "\e[10A"
+    for i in {1..10}; do
+        echo -n "                                                                                                 "
+    done
+    echo -e "\e[5A"
+
     echo -e "${YELLOW}Waiting for pods dev...${NC}"
     sudo kubectl get pods -n dev
-    sleep 20
+    sleep 2
 done
 
-sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
-sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
 
-while 1; do
-    echo -e "${YELLOW}Waiting for port-forward...${NC}"
-    sleep 20
-    if [[ $(sudo kubectl get pod -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; then
-        while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do    
-            echo -e "${YELLOW}Waiting for pods dev...${NC}"
-            sudo kubectl get pods -n dev
-            sleep 20
-        done
-        sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
-        echo -e "${GREEN}Port-forward dev applied successfully.${NC}"
-    fi
-done
