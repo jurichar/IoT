@@ -13,12 +13,24 @@ sudo kubectl create namespace dev
 sudo kubectl create namespace argocd
 sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-sudo kubectl get pods -n argocd -w
+while [[ $(sudo kubectl get pods -n argocd -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true true true true true true true" ]]; do    
+    echo -e "${YELLOW}Waiting for pods argocd...${NC}"
+    sudo kubectl get pods -n argocd
+    sleep 20
+done
+
 sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > psswd.txt
 # sudo kubectl -n argocd patch secret argocd-secret -p '{"stringData":  {"admin.password": "$2y$12$Kg4H0rLL/RVrWUVhj6ykeO3Ei/YqbGaqp.jAtzzUSJdYWT6LUh/n6", "admin.passwordMtime": "'$(date +%FT%T%Z)'"}}'
 sudo kubectl apply -f project.yaml -n argocd
 
 sudo kubectl apply -f application.yaml -n argocd
+
 sudo kubectl get pods -n dev -w
+while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do   
+    echo -e "${YELLOW}Waiting for pods dev...${NC}"
+    sudo kubectl get pods -n dev
+    sleep 20
+done
+
 sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
 sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
