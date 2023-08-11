@@ -40,21 +40,21 @@ password=$(sudo kubectl -n argocd get secret argocd-initial-admin-secret -o json
 echo "user: admin" > id_agrocd.txt
 echo "password : $password" >> id_agrocd.txt
 
-if sudo kubectl apply -f application.yaml -n argocd 2>/dev/null; then
-    echo -e "${GREEN}Application deployment applied successfully.${NC}"
-else
-    echo -e "${RED}Error applying app deployment.${NC}"
-fi
-
 if sudo kubectl apply -f project.yaml -n argocd 2>/dev/null; then
     echo -e "${GREEN}Project service applied successfully.${NC}"
 else
     echo -e "${RED}Error applying app service.${NC}"
 fi
 
+if sudo kubectl apply -f application.yaml -n argocd 2>/dev/null; then
+    echo -e "${GREEN}Application deployment applied successfully.${NC}"
+else
+    echo -e "${RED}Error applying app deployment.${NC}"
+fi
+
 while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do    
-    echo -e "\e[3A"
-    for i in {1..3}; do
+    echo -e "\e[2A"
+    for i in {1..2}; do
         echo -n "                                                                                                 "
     done
     echo -e "\e[2A"
