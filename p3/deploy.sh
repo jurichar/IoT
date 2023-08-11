@@ -14,7 +14,6 @@ sudo kubectl config set-cluster part3 --server=https://localhost:6443 --insecure
 sudo kubectl create namespace dev
 sudo kubectl create namespace argocd
 
-
 if sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml 2>/dev/null; then
     echo -e "${GREEN}ArgoCD applied successfully.${NC}"
 else

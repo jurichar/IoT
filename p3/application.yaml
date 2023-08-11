@@ -1,14 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  labels:
-    app: wil-playground
   name: project-iot
 spec:
   project: wil-playground-project
   source:
     repoURL: https://github.com/m3L4n/mpochard-config.git
-    targetRevision: main
+    targetRevision: p3_dev
     path: dev
   destination:
     server: https://kubernetes.default.svc

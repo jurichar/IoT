@@ -7,9 +7,9 @@ metadata:
 spec:
   description: Our ArgoCD Project to deploy our app locally
   sourceRepos:
-  - "https://github.com/m3L4n/*"
+    - "https://github.com/m3L4n/*"
   destinations:
-  - namespace: dev
-    server: https://kubernetes.default.svc
+    - namespace: dev
+      server: https://kubernetes.default.svc
   orphanedResources:
     warn: false
