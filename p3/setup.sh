@@ -28,6 +28,12 @@ function install_kubectl() {
 	rm kubectl
 }
 
+function install_argocd() {
+	curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+	sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+	rm argocd-linux-amd64
+}
+
 function install_dependencies() {
 	if command -v docker &> /dev/null;
 	then
@@ -38,9 +44,16 @@ function install_dependencies() {
 
 	if command -v kubectl &> /dev/null;
 	then
-		echo "kubectl alreay installed"
+		echo "kubectl already installed"
 	else
 		install_kubectl
+	fi
+
+	if command -v argocd &> /dev/null;
+	then
+		echo "argocd already install"
+	else
+		install_argocd
 	fi
 }
 
