@@ -8,7 +8,7 @@ spec:
   project: wil-playground-project
   source:
     repoURL: https://github.com/m3L4n/mpochard-config.git
-    targetRevision: main2
+    targetRevision: main
     path: dev
   destination:
     server: https://kubernetes.default.svc
