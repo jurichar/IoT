@@ -20,17 +20,6 @@ else
     echo -e "${RED}Error applying ArgoCD.${NC}"
 fi
 
-# if sudo kubectl apply -f App/dev/deployment.yaml -n dev 2>/dev/null; then
-#     echo -e "${GREEN}App deployment applied successfully.${NC}"
-# else
-#     echo -e "${RED}Error applying app deployment.${NC}"
-# fi
-
-# if sudo kubectl apply -f App/dev/service.yaml -n dev 2>/dev/null; then
-#     echo -e "${GREEN}App service applied successfully.${NC}"
-# else
-#     echo -e "${RED}Error applying app service.${NC}"
-# fi
 
 while [[ $(sudo kubectl get pods -n argocd -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true true true true true true true" ]]; do    
     echo -e "${YELLOW}Waiting for pods agrocd...${NC}"
@@ -42,17 +31,22 @@ password=$(sudo kubectl -n argocd get secret argocd-initial-admin-secret -o json
 echo "user: admin" > id_agrocd.txt
 echo "password : $password" >> id_agrocd.txt
 
-# sudo kubectl get services -n argocd
-# sudo kubectl get services -n dev
-# sudo kubectl get deployments -n dev
+if sudo kubectl apply -f application.yaml -n argocd 2>/dev/null; then
+    echo -e "${GREEN}Application deployment applied successfully.${NC}"
+else
+    echo -e "${RED}Error applying app deployment.${NC}"
+fi
 
-sudo kubectl apply -f project.yaml -n argocd
-sudo kubectl apply -f application.yaml -n argocd
+if sudo kubectl apply -f project.yaml -n argocd 2>/dev/null; then
+    echo -e "${GREEN}App service applied successfully.${NC}"
+else
+    echo -e "${RED}Error applying app service.${NC}"
+fi
 
 while [[ $(sudo kubectl get pods -n dev -o 'jsonpath={..status.containerStatuses[*].ready}' 2>/dev/null) != "true" ]]; do    
     echo -e "${YELLOW}Waiting for pods agrocd...${NC}"
     sleep 20
 done
 
-sudo kubectl port-forward -n argocd service/argocd-server 8080:443 &
-sudo kubectl port-forward -n dev service/wil-service 8888:8888 &
+while true; do sudo kubectl port-forward -n argocd service/argocd-server 8080:443; done &
+while true; do sudo kubectl port-forward -n dev service/wil-service 8888:8888; done &
