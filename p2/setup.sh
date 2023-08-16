@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 
 function setup_centos_mirror() {
   cd /etc/yum.repos.d/
