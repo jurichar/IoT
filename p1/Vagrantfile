@@ -18,10 +18,11 @@ server_script = <<-SHELL
     export INSTALL_K3S_EXEC="--bind-address=#{server_ip} --node-external-ip=#{server_ip} --flannel-iface=eth1"
     curl -sfL https://get.k3s.io | sh -
     echo "Sleeping for 5 seconds to wait for k3s to start"
-    sleep 5
+    sleep 30
+    sudo chmod 777 /etc/rancher/k3s/k3s.yaml
     cp /var/lib/rancher/k3s/server/token /vagrant_shared
     cp /etc/rancher/k3s/k3s.yaml /vagrant_shared
-    sudo chmod 777 /etc/rancher/k3s/k3s.yaml
+
     SHELL
 
 agent_script = <<-SHELL
